@@ -2,6 +2,8 @@ import { StatusBar } from 'expo-status-bar';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { Button } from 'react-native';
 import React, { useEffect, useState } from 'react';
+import Logo from './components/LogoAndTitle';
+
 /* import de screens*/
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
@@ -25,14 +27,8 @@ export default function App() {
   if (isLoading) {
     return (
       <View style={styles.container}>
-          <View style={styles.rowContainer}>
-            <Image
-              source={require('./assets/icons/logo.png')} 
-              style={styles.logo}
-            />
-            <Text style={styles.title}>Easy Parking</Text>
-          </View>
-          </View>
+      <Logo />
+    </View>
     );
   }
 
@@ -52,18 +48,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  rowContainer: {
-    flexDirection: 'row', 
-    alignItems: 'center', 
-  },
-  logo: {
-    width: 55,  
-    height:55,
-  },
-  title: {
-    color: '#4FA3D1',
-    fontSize: 24,
-    fontWeight: 'bold',
-    fontFamily: 'Plus Jakarta Sans',
-  },
+  
 });
