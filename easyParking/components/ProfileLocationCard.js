@@ -1,20 +1,23 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, Image, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 export default function ProfileLocationCard(props){
     return(
-        <View style={[styles.container,props.style]}>
+      <TouchableOpacity 
+      style={[styles.container, props.style]} 
+      onPress={props.onPress}
+    >
         
             <View style={styles.iconContainer}>
-                <MaterialCommunityIcons name="account" size={20} />
+                <MaterialCommunityIcons name={props.icon} size={20} color="white"/>
             </View>
 
             <View style={styles.textContainer}>
                 <Text style={styles.subtitle}>{props.title}</Text>
                 <Text style={styles.mainText}>{props.information}</Text>
             </View>
-        </View>
+        </TouchableOpacity>
     );
     
 }
@@ -25,7 +28,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1E242D',
     borderRadius: 100,
-    padding: 20,
+    padding: 8,
     width: '72%',
     alignSelf: 'center',
   },

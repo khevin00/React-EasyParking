@@ -1,0 +1,24 @@
+{
+  "name": "react-easyparking",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/khevin00/React-EasyParking.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/khevin00/React-EasyParking/issues"
+  },
+  "homepage": "https://github.com/khevin00/React-EasyParking#readme",
+  "description": "",
+  "dependencies": {
+    "expo": "^52.0.23"
+  }
+}

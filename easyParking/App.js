@@ -1,6 +1,5 @@
-import { StatusBar } from 'expo-status-bar';
+import 'react-native-gesture-handler';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import { Button } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Logo from './components/LogoAndTitle';
 
@@ -10,10 +9,8 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 
 import TabNavigator from './components/TabNavigator';
-
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-const Tab = createBottomTabNavigator();
+import { UserProvider } from './context/UserContext';
 
 export default function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -33,15 +30,21 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator initialRouteName="Tabs" screenOptions={{headerShown: false}}>
-        <Tab.Screen name="Tabs" component={TabNavigator} />
-      </Tab.Navigator>
-    </NavigationContainer>
+    <UserProvider>
+      <NavigationContainer>
+        <TabNavigator />
+      </NavigationContainer>
+    </UserProvider>
   );
+    
 }
 
 const styles = StyleSheet.create({
+  scrollContainer: {
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   container: {
     flex: 1,
     backgroundColor: '#151A23',

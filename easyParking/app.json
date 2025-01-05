@@ -3,6 +3,7 @@
     "name": "easyParking",
     "slug": "easyParking",
     "version": "1.0.0",
+    "main": "App.js",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -19,10 +20,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.easyParking"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "expo": {
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+      
     }
   }
+  
 }
+

@@ -10,6 +10,8 @@ export default function ChampField(props) {
         placeholder={props.titleField}
         placeholderTextColor="#777"
         secureTextEntry={props.secureTextEntry || false}
+        onChangeText={props.onChangeText}
+        value={props.value}
       />
     </View>
   );
@@ -29,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#151A23',
     borderRadius: 25,
     padding: 12,
-    color: '#333',
+    color: 'white',
     borderWidth: 1,
     borderColor: '#4FA3D1',
   },

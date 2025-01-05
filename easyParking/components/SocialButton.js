@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function SocialButton (props) {
     return(
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={[styles.button, props.style]}>
             <MaterialCommunityIcons name={props.icon} size={20} color="white" />
             <Text style={styles.text}>{props.title}</Text>
         </TouchableOpacity>
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#4FA3D1',
         paddingVertical: 12,
         borderRadius: 8,
-        marginBottom: 10,
+        marginBottom: 15,
         width: '82%',
         borderRadius: 25,
         flexDirection: 'row',
