@@ -8,68 +8,14 @@ import MapScreen from './MapScreen';
 import { UserContext } from '../context/UserContext';
 import { getAllParkings } from '../apiCalls/getAllParkings';
 import * as Location from 'expo-location';
-import { haversine } from '../context/haversine';
 
 export default function HomeScreen() {
   const navigation = useNavigation();
   const { user } = useContext(UserContext);
-  const [location, setLocation] = useState(null);
-  const [sortedParkings, setSortedParkings] = useState([]);
-
-  // Récupération de la localisation et des parkings
-  useEffect(() => {
-    (async () => {
-      try {
-        // Obtenir la position actuelle de l'utilisateur
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          Alert.alert('Permission refusée', 'Impossible d\'accéder à la localisation.');
-          return;
-        }
-        const currentLocation = await Location.getCurrentPositionAsync({});
-        setLocation(currentLocation.coords);
-
-        // Récupérer les parkings depuis l'API
-        const fetchedParkings = await getAllParkings();
-
-        // Calculer la distance pour chaque parking
-        const parkingsWithDistance = fetchedParkings.map((parking) => {
-          const [lat, lon] = parking.coordinates.split(',').map(Number);
-          return {
-            ...parking,
-            distance: haversine(
-              currentLocation.coords.latitude,
-              currentLocation.coords.longitude,
-              lat,
-              lon
-            ),
-          };
-        });
-
-        // Trier les parkings par distance
-        parkingsWithDistance.sort((a, b) => a.distance - b.distance);
-        setSortedParkings(parkingsWithDistance);
-      } catch (error) {
-        Alert.alert('Erreur', 'Impossible de récupérer les parkings.');
-      }
-    })();
-  }, []);
-
-  // Fonction pour afficher chaque parking dans une carte
-  const renderParking = ({ item }) => (
-    <ParkingCard
-      title={item.name}
-      info={item.telephone}
-      distance={`${item.distance.toFixed(1)} km`}
-      travelTime={`${(item.distance / 0.3).toFixed(0)} min`} // Hypothèse : 0.3 km/min
-      freePlaces={`${item.places} libres`}
-      opening={item.opening}
-    />
-  );
 
   return (
     <View style={styles.container}>
-      {/* En-tête avec la barre de recherche et les informations utilisateur */}
+      
       <View style={styles.header}>
         <ProfileLocationCard
           style={styles.topSection}
@@ -81,21 +27,8 @@ export default function HomeScreen() {
         <SearchBar />
       </View>
 
-      {/* Carte avec les marqueurs */}
       <MapScreen style={styles.map} />
 
-      {/* Liste déroulante des parkings */}
-      {sortedParkings.length > 0 && (
-        <View style={styles.parkingList}>
-          <Text style={styles.listTitle}>Parkings à proximité</Text>
-          <FlatList
-            data={sortedParkings}
-            renderItem={renderParking}
-            keyExtractor={(item) => item.parking_id.toString()}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
-      )}
     </View>
   );
 }
@@ -116,7 +49,7 @@ const styles = StyleSheet.create({
   },
   map: {
     width: '100%',
-    height: '50%',
+    height: '70%',
   },
   parkingList: {
     flex: 1,

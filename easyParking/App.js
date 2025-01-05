@@ -2,12 +2,6 @@ import 'react-native-gesture-handler';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import Logo from './components/LogoAndTitle';
-
-/* import de screens*/
-import RegisterScreen from './screens/RegisterScreen';
-import HomeScreen from './screens/HomeScreen';
-import LoginScreen from './screens/LoginScreen';
-
 import TabNavigator from './components/TabNavigator';
 import { NavigationContainer } from '@react-navigation/native';
 import { UserProvider } from './context/UserContext';

@@ -4,26 +4,21 @@ import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 import * as Location from 'expo-location';
 import { darkMapStyle } from '../context/MapStyles';
 import { getAllParkings } from '../apiCalls/getAllParkings';
+import { useNavigation } from '@react-navigation/native';
 
 export default function MapScreen() {
   const [location, setLocation] = useState(null);
   const [parkings, setParkings] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     (async () => {
-      // Demande de permission pour accéder à la localisation
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        console.error('Permission refusée');
-        return;
-      }
-  
       try {
-        // Récupérer la localisation actuelle
+        // Récupérer la position actuelle
         let currentLocation = await Location.getCurrentPositionAsync({});
         setLocation(currentLocation.coords);
 
-        // Récupérer les parkings depuis l'API
+        // Récupérer les parkings
         const fetchedParkings = await getAllParkings();
         setParkings(fetchedParkings);
       } catch (error) {
@@ -32,10 +27,12 @@ export default function MapScreen() {
     })();
   }, []);
 
-  if (!location) {
+  if (!location || parkings.length === 0) {
     return (
       <View style={styles.container}>
-        <Text style={{ color: '#FFF' }}>Chargement de la carte...</Text>
+        <Text style={{ color: '#FFF' }}>
+          {location ? 'Chargement des parkings...' : 'Chargement de la carte...'}
+        </Text>
       </View>
     );
   }
@@ -52,12 +49,10 @@ export default function MapScreen() {
       }}
       customMapStyle={darkMapStyle}
     >
-      {/* Marqueur pour la position de l'utilisateur */}
       <Marker
         coordinate={{ latitude: location.latitude, longitude: location.longitude }}
         title="Vous êtes ici"
       />
-      {/* Marqueurs pour les parkings */}
       {parkings.map((parking) => {
         const [lat, lon] = parking.coordinates.split(',').map(Number);
         return (
@@ -66,6 +61,7 @@ export default function MapScreen() {
             coordinate={{ latitude: lat, longitude: lon }}
             title={parking.name}
             description={`Places disponibles : ${parking.places}`}
+            onPress={() => navigation.navigate('ParkingDetailsScreen', { parking })}
           />
         );
       })}
@@ -77,9 +73,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#151A23',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   map: {
     width: '100%',
-    height: '30%',
+    height: '50%',
   },
 });

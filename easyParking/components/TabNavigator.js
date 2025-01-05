@@ -3,6 +3,7 @@ import RegisterScreen from '../screens/RegisterScreen';
 import ConnectScreen from '../screens/ConnectScreen';
 import SettingScreen from '../screens/SettingScreen';
 import CarScreen from '../screens/CarScreen';
+import ParkingDetailsScreen from '../screens/ParkingDetailsScreen';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -16,6 +17,7 @@ export default function TabNavigator () {
         <Stack.Screen name="HomeScreen" component={HomeScreen}/>
         <Stack.Screen name="SettingScreen" component={SettingScreen}/>
         <Stack.Screen name="CarScreen" component={CarScreen}/>
+        <Stack.Screen name="ParkingDetailsScreen" component={ParkingDetailsScreen}/>
     </Stack.Navigator>
   );
 }
