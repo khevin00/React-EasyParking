@@ -21,13 +21,13 @@ export default function SettingScreen(){
     const [newVehicle, setNewVehicle] = useState('');
     const [licensePlate, setLicensePlate] = useState('');
 
-     // Récupérer les voitures au chargement
+     
   useEffect(() => {
     const fetchCars = async () => {
       try {
         const fetchedCars = await getAllCarsByUser();
         setCars(fetchedCars.map((car) => car.model)); // Met à jour la liste des voitures
-        setSelectedCar(fetchedCars[0]?.model || ''); // Par défaut, sélectionne la première voiture
+        setSelectedCar(fetchedCars[0]?.model || ''); 
       } catch (error) {
         Alert.alert('Erreur', 'Impossible de charger les voitures');
       }
