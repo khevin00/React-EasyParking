@@ -27,10 +27,13 @@
       "favicon": "./assets/favicon.png"
     },
     "expo": {
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
-      
-    }
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
-  
 }
-

@@ -1,26 +1,30 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ChampField from '../components/ChampField';
 import SimpleButton from '../components/Button';
 import SocialButton from '../components/SocialButton';
 import Logo from '../components/LogoAndTitle';
-import { UserContext } from '../context/UserContext';
+import { saveToken } from '../utils/secureStore'; 
+import { setUser } from '../redux/features/userSlice'; 
 import { login } from '../apiCalls/login';
 
 export default function ConnectScreen() {
   const navigation = useNavigation();
-  const { setUser, setPass, setToken } = useContext(UserContext);
+  const dispatch = useDispatch(); 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      const {success, token} = await login(username, password);
+      const { success, token } = await login(username, password);
+
       if (success) {
-        setUser(username); 
-        setPass(password);
-        setToken(token); 
+        await saveToken('userToken', token);
+
+        dispatch(setUser({ username, password, token }));
+
         navigation.navigate('HomeScreen');
       } else {
         Alert.alert('Erreur', 'Identifiants incorrects');

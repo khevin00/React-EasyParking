@@ -1,83 +1,81 @@
-import {React, useContext, useState, useEffect} from 'react';
-import { View, Text, StyleSheet, ScrollView, Alert  } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Alert, StyleSheet } from 'react-native';
 import Logo from '../components/LogoAndTitle';
-import { useNavigation } from '@react-navigation/native';
 import ProfileLocationCard from '../components/ProfileLocationCard';
 import ChampField from '../components/ChampField';
 import Button from '../components/Button';
 import Bar from '../components/PresentationBar';
-import { UserContext } from '../context/UserContext';
 import ComboboxCar from '../components/ComboboxCar';
-import { getAllCarsByUser } from '../apiCalls/getCars';
-import { addCar } from '../apiCalls/addCar';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchCars, addNewCar } from '../redux/features/carSlice';
 
-export default function SettingScreen(){
-    const navigation = useNavigation();
-     const { user, password, setUser, setPass} = useContext(UserContext);
-    const [currentPassword, setCurrentPassword] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [selectedCar, setSelectedCar] = useState('BMW X1');
-    const [cars, setCars] = useState([]);
-    const [newVehicle, setNewVehicle] = useState('');
-    const [licensePlate, setLicensePlate] = useState('');
+export default function CarScreen() {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.username); 
+  const cars = useSelector((state) => state.cars.items);
+  const [newVehicle, setNewVehicle] = useState('');
+  const [licensePlate, setLicensePlate] = useState('');
+  const [selectedCar, setSelectedCar] = useState('');
 
-     
   useEffect(() => {
-    const fetchCars = async () => {
-      try {
-        const fetchedCars = await getAllCarsByUser();
-        setCars(fetchedCars.map((car) => car.model)); // Met à jour la liste des voitures
-        setSelectedCar(fetchedCars[0]?.model || ''); 
-      } catch (error) {
-        Alert.alert('Erreur', 'Impossible de charger les voitures');
-      }
-    };
-
-    fetchCars();
-  }, []);
+    dispatch(fetchCars());
+  }, [dispatch]);
 
   const handleAddCar = async () => {
     if (!newVehicle.trim() || !licensePlate.trim()) {
-        return navigation.goBack();
+      return Alert.alert('Erreur', 'Veuillez remplir tous les champs.');
     }
 
     try {
-      await addCar(licensePlate, newVehicle, user);
+      dispatch(addNewCar({ model: newVehicle, licensePlate })); 
       Alert.alert('Succès', 'Véhicule ajouté avec succès');
       setNewVehicle('');
       setLicensePlate('');
-      navigation.goBack(); 
     } catch (error) {
-      Alert.alert('Erreur', error.message || 'Une erreur est survenue');
+      console.log(error);
+      Alert.alert('Erreur', 'Une erreur est survenue lors de l’ajout du véhicule.');
     }
   };
 
-    return(
-        <View style={styles.container}>
-            <Logo/>
-            <ProfileLocationCard style={styles.topSection} title="Bienvenue" information={user} icon="account" />
+  return (
+    <View style={styles.container}>
+      <Logo />
+      <ProfileLocationCard
+        style={styles.topSection}
+        title="Bienvenue"
+        information={user}
+        icon="car"
+      />
 
-            <Bar title="Véhicule(s)"/>  
-            <ComboboxCar
-            label="Véhicule actuel"
-            data={cars} // Remplit le combobox avec la liste des voitures
-            selectedValue={selectedCar}
-            onValueChange={(value) => setSelectedCar(value)}
-            />
-            <ChampField titleLabel="Nouveau véhicule" titleField="" value={newVehicle}
-        onChangeText={setNewVehicle}/>
-            <ChampField titleLabel="Plaque d'immatriculation" titleField="" value={licensePlate}
-        onChangeText={setLicensePlate}/>
-            <Button title="Mettre à jour" color="#52889F" onPress={handleAddCar}/>
-        </View>
-    );
+      <Bar title="Véhicule(s)" />
+      <ComboboxCar
+        label="Véhicule actuel"
+        data={cars} 
+        selectedValue={selectedCar}
+        onValueChange={(value) => setSelectedCar(value)}
+      />
+      <ChampField
+        titleLabel="Nouveau véhicule"
+        titleField="Modèle du véhicule"
+        value={newVehicle}
+        onChangeText={setNewVehicle}
+      />
+      <ChampField
+        titleLabel="Plaque d'immatriculation"
+        titleField="Plaque d'immatriculation"
+        value={licensePlate}
+        onChangeText={setLicensePlate}
+      />
+      <Button title="Ajouter le véhicule" color="#52889F" onPress={handleAddCar} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#151A23',
-    }
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#151A23',
+  },
 });

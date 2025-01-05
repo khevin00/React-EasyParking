@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const API_BASE_URL = 'http://192.168.0.111:3001';
 
-// Fonction de connexion
 export const login = async (username, password) => {
   try {
     const response = await axios.post(`${API_BASE_URL}/user/login`, {
@@ -11,12 +10,10 @@ export const login = async (username, password) => {
       password,
     });
 
-    // Stocke le token dans AsyncStorage
     if (response.status === 201) {
-        const token = response.data; // Assurez-vous que l'API renvoie le token JWT directement
+        const token = response.data; 
         await AsyncStorage.setItem('userToken', token); 
-        // Stocke le token dans AsyncStorage
-        return { success: true, token }; // Retourne uniquement ce qui est nécessaire
+        return { success: true, token }; 
     }
   } catch (error) {
     throw error;
@@ -35,7 +32,6 @@ export const getToken = async () => {
     }
   };
   
-  // Supprime le token pour la déconnexion
   export const logout = async () => {
     try {
       await AsyncStorage.removeItem('userToken');

@@ -18,9 +18,9 @@ export const register = async ({ firstname, lastname, username, password, dateOf
     });
 
     if (response.status === 201) {
-      return response.data; // Retourne les données de l'utilisateur
+      return response.data;
     }
   } catch (error) {
-    throw new Error(error.response?.data || "Erreur d'inscription");
+    throw new Error( "Erreur d'inscription");
   }
 };

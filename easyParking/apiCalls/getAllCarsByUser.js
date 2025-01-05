@@ -14,8 +14,7 @@ export const getAllCarsByUser = async () => {
       },
     });
     if (response.status === 200) {
-      return response.data;
-       // Retourne les données des voitures
+      return response.data; // Retourne les données des voitures
     } else {
       throw new Error('Impossible de récupérer les voitures');
     }

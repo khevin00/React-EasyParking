@@ -1,49 +1,15 @@
-import 'react-native-gesture-handler';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import React, { useEffect, useState } from 'react';
-import Logo from './components/LogoAndTitle';
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 import TabNavigator from './components/TabNavigator';
 import { NavigationContainer } from '@react-navigation/native';
-import { UserProvider } from './context/UserContext';
 
 export default function App() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-      <Logo />
-    </View>
-    );
-  }
-
   return (
-    <UserProvider>
+    <Provider store={store}>
       <NavigationContainer>
         <TabNavigator />
       </NavigationContainer>
-    </UserProvider>
+    </Provider>
   );
-    
 }
-
-const styles = StyleSheet.create({
-  scrollContainer: {
-    flexGrow: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#151A23',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  
-});
