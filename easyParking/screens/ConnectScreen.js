@@ -18,7 +18,7 @@ export default function ConnectScreen() {
     try {
       const {success, token} = await login(username, password);
       if (success) {
-        setUser(username); // Sauvegarde l'utilisateur dans le contexte
+        setUser(username); 
         setPass(password);
         setToken(token); 
         navigation.navigate('HomeScreen');
